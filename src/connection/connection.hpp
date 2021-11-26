@@ -5,7 +5,7 @@ using namespace std;
 class Connection
 {
 public:
-    Connection(int fd) : fd(fd) {}
+    Connection(int fd, bool hasError = false) : fd(fd), hasError(hasError) {}
 
     void sendMessage(const string& msg) {
         send(fd, msg.c_str(), 256, 0);
@@ -21,6 +21,11 @@ public:
         close(fd);
     }
 
+    bool getHasError() {
+        return hasError;
+    }
+
 private:
     int fd;
+    bool hasError;
 };

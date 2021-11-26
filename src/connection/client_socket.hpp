@@ -8,7 +8,7 @@ public:
     Connection *makeConnection()
     {
         int err = connect(socketfd, (struct sockaddr *)&info, sizeof(info));
-        Connection *conn = new Connection(socketfd);
+        Connection *conn = new Connection(socketfd, err == -1);
         return conn;
     }
 };

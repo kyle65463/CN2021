@@ -1,9 +1,4 @@
 #include <iostream>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
 #include "connection/client_socket.hpp"
 using namespace std;
 
@@ -19,6 +14,10 @@ int main(int argc, char *argv[])
     int port = stoi(ipport.substr(ipport.find(':') + 1));
     ClientSocket client = ClientSocket(port, ip);
     Connection *conn = client.makeConnection();
+    if(conn->getHasError()) {
+        cout << "Connection error" << endl;
+        return 0;
+    }
     string msg = "yoyoyo I'm client";
     conn->sendMessage(msg);
     string res = conn->recvMessage();
