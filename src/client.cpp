@@ -19,21 +19,6 @@ int main(int argc, char *argv[])
         return 0;
     }
     string msg = "yoyoyo I'm client";
-    conn->sendMessage(msg);
-    string res = conn->recvMessage();
-    cout << "Get: " << res << endl;
-
-    FILE *fd = fopen("test.png", "rb");
-    size_t rret, wret;
-    int bytes_read;
-    char buffer[1024];
-    while (!feof(fd))
-    {
-        
-        if ((bytes_read = fread(&buffer, 1, 1024, fd)) > 0)
-            send(conn->fd, buffer, bytes_read, 0);
-        else
-            break;
-    }
-    fclose(fd);
+    conn->sendFile("test.png");
+    conn->sendFile("test.png");
 }
