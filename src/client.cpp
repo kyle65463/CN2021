@@ -22,4 +22,18 @@ int main(int argc, char *argv[])
     conn->sendMessage(msg);
     string res = conn->recvMessage();
     cout << "Get: " << res << endl;
+
+    FILE *fd = fopen("test.png", "rb");
+    size_t rret, wret;
+    int bytes_read;
+    char buffer[1024];
+    while (!feof(fd))
+    {
+        
+        if ((bytes_read = fread(&buffer, 1, 1024, fd)) > 0)
+            send(conn->fd, buffer, bytes_read, 0);
+        else
+            break;
+    }
+    fclose(fd);
 }

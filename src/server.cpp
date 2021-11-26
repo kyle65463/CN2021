@@ -18,6 +18,15 @@ int main(int argc, char *argv[])
         string msg = "Hi from server";
         conn->sendMessage(msg);
         string res = conn->recvMessage();
+        size_t datasize = 1;
+        FILE *fd = fopen("test_out.png", "wb");
+        while (datasize > 0)
+        {
+            char text[1024];
+            datasize = recv(conn->fd, text, sizeof(text), 0);
+            fwrite(&text, 1, datasize, fd);
+        }
+        fclose(fd);
         cout << "Get: " << res << endl;
         conn->closeConnection();
     }

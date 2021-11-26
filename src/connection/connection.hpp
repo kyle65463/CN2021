@@ -25,7 +25,7 @@ public:
         return hasError;
     }
 
-private:
+// private:
     int fd;
     bool hasError;
 };
