@@ -7,7 +7,8 @@ public:
 
     void execute(Connection *conn)
     {
-        conn->sendFile(clientBasepath + "/" + filename);
+        string fullFilename = clientBasepath + "/" + filename;
+        conn->sendFile(fullFilename);
     }
 
 private:
@@ -21,7 +22,11 @@ public:
 
     void execute(Connection *conn)
     {
-        conn->recvFile(serverBasepath + "/" + filename);
+        bool err = conn->recvFile(serverBasepath + "/" + filename);
+        if (!err)
+            conn->sendMessage("put " + filename + " successfully\n");
+        else
+            conn->sendMessage("The " + filename + " doesn’t exist\n");
     }
 
 private:

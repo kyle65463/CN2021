@@ -21,21 +21,9 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    // Try logging in
     while (1)
     {
-        string serverOutput = conn->recvMessage();
-        cout << serverOutput;
-        if (serverOutput == "connect successfully\n")
-            break;
-        string username;
-        getline(cin, username);
-        conn->sendMessage(username);
-    }
-
-    // Send commands
-    while (1)
-    {
+        cout << conn->recvMessage();
         string input;
         getline(cin, input);
         conn->sendMessage(input); // Send input to server first

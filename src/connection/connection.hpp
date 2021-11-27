@@ -34,13 +34,18 @@ public:
 
     void sendFile(const string &filename)
     {
-        // Open the file and read its length
+        // Open the file and
         FILE *fp = fopen(filename.c_str(), "rb");
+        if (!fp)
+        {
+            sendMessage("-1", HEADER_SIZE); // Indicates no sending file
+            return;
+        }
+
+        // Read length and send the file's length as header
         fseek(fp, 0L, SEEK_END);
         int filelen = ftell(fp);
         fseek(fp, 0L, SEEK_SET);
-
-        // Send the file's length as header
         sendMessage(to_string(filelen), HEADER_SIZE);
 
         // Read and send the file
@@ -56,13 +61,15 @@ public:
         fclose(fp);
     }
 
-    void recvFile(const string &outname)
+    bool recvFile(const string &outname)
     {
-        // Open the file and receive header (file length) first
-        FILE *fp = fopen(outname.c_str(), "wb");
+        // Receive header (file length) first
         int length = stoi(recvMessage(HEADER_SIZE));
+        if (length < 0)
+            return true; // Client put a non-existing file
 
         // Recieve the file
+        FILE *fp = fopen(outname.c_str(), "wb");
         char buffer[FILE_BUF_SIZE];
         int bytesRead;
         while (length > 0)
@@ -72,6 +79,7 @@ public:
             fwrite(&buffer, 1, bytesRead, fp);
         }
         fclose(fp);
+        return false;
     }
 
     void login(const string &username)
