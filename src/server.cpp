@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
                     if (cmd == NULL)
                         conn->sendMessage("Command not found\n");
                     else
-                        conn->sendMessage("ok\n");
+                        cmd->execute(conn);
                 }
             }
         }

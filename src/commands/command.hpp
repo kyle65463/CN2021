@@ -6,5 +6,10 @@ using namespace std;
 
 class Command
 {
+public:
+    virtual void execute(Connection *conn) = 0;
+
+protected:
+    string basepath = "src";
 };
 #endif

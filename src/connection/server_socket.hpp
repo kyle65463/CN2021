@@ -8,7 +8,7 @@ public:
     void startListening()
     {
 
-        int bindErr = bind(socketfd, (struct sockaddr *)&info, sizeof(info));
+        int bindErr = ::bind(socketfd, (struct sockaddr *)&info, sizeof(info));
         if (bindErr == -1)
             cout << "binding error" << endl;
         int listenErr = listen(socketfd, 10);
