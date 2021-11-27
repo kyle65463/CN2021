@@ -18,7 +18,11 @@ int main(int argc, char *argv[])
         cout << "Connection error" << endl;
         return 0;
     }
-    string msg = "yoyoyo I'm client";
-    conn->sendFile("test.png");
-    conn->sendFile("test.png");
+
+    while(1) {
+        cout << conn->recvMessage() << endl;
+        string msg;
+        cin >> msg;
+        conn->sendMessage(msg);
+    }
 }

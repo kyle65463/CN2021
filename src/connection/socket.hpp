@@ -20,6 +20,9 @@ public:
 
     virtual Connection *makeConnection() = 0;
 
+    // Getters
+    int getFd() { return socketfd; }
+
 protected:
     struct sockaddr_in info;
     int socketfd;

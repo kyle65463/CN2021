@@ -9,13 +9,18 @@ public:
 
     void sendMessage(const string &msg)
     {
-        send(fd, msg.c_str(), 256, 0);
+        send(fd, msg.c_str(), msg.size(), 0);
     }
 
     string recvMessage()
     {
         char buf[256] = {};
-        recv(fd, buf, sizeof(buf), 0);
+        int ret = recv(fd, buf, sizeof(buf), 0);
+        if (ret <= 0)
+        {
+            disconnected = true;
+            closeConnection();
+        }
         return string(buf);
     }
 
@@ -52,12 +57,13 @@ public:
         close(fd);
     }
 
-    bool getHasError()
-    {
-        return hasError;
-    }
+    // Getters
+    int getFd() { return fd; }
+    bool getHasError() { return hasError; }
+    bool getDisconnected() { return disconnected; }
 
 private:
     int fd;
     bool hasError;
+    bool disconnected;
 };
