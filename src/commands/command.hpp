@@ -10,6 +10,7 @@ public:
     virtual void execute(Connection *conn) = 0;
 
 protected:
-    string basepath = "server_dir";
+    string serverBasepath = "server_dir";
+    string clientBasepath = "client_dir";
 };
 #endif

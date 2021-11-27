@@ -19,10 +19,10 @@ public:
     void execute(Connection *conn)
     {
         stringstream ss;
-        for (const auto &entry : fs::directory_iterator(basepath))
+        for (const auto &entry : fs::directory_iterator(serverBasepath))
         {
             string path = entry.path().string();
-            string trimmedPath = path.substr(basepath.size() + 1, path.size()); // Remove basepath
+            string trimmedPath = path.substr(serverBasepath.size() + 1, path.size()); // Remove basepath
             ss << trimmedPath << endl;
         }
         conn->sendMessage(ss.str());

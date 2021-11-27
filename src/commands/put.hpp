@@ -7,6 +7,7 @@ public:
 
     void execute(Connection *conn)
     {
+        conn->sendFile(clientBasepath + "/" + filename);
     }
 
 private:
@@ -20,6 +21,8 @@ public:
 
     void execute(Connection *conn)
     {
+        conn->recvFile(serverBasepath + "/" + filename);
+        conn->sendMessage("ok\n");
     }
 
 private:
