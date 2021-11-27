@@ -18,13 +18,20 @@ class ServerList : public Command
 public:
     void execute(Connection *conn)
     {
+        // List the directory
         stringstream ss;
+        vector<string> paths;
         for (const auto &entry : fs::directory_iterator(serverBasepath))
         {
             string path = entry.path().string();
             string trimmedPath = path.substr(serverBasepath.size() + 1, path.size()); // Remove basepath
-            ss << trimmedPath << endl;
+            paths.push_back(trimmedPath);
         }
+
+        // Sort and send the result
+        sort(paths.begin(), paths.end());
+        for (auto &path : paths)
+            ss << path << endl;
         conn->sendMessage(ss.str());
     }
 };

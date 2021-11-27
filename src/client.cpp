@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     Connection *conn = client.makeConnection();
     if (conn->getHasError())
     {
-        cout << "Connection error" << endl;
+        cout << "connection error" << endl;
         return 0;
     }
 
