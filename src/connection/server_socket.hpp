@@ -8,12 +8,14 @@ public:
     void startListening()
     {
 
-        int err = bind(socketfd, (struct sockaddr *)&info, sizeof(info));
-        if (err == -1)
+        int bindErr = bind(socketfd, (struct sockaddr *)&info, sizeof(info));
+        if (bindErr == -1)
             cout << "binding error" << endl;
-        err = listen(socketfd, 10);
-        if (err == -1)
+        int listenErr = listen(socketfd, 10);
+        if (listenErr == -1)
             cout << "listening error" << endl;
+        if (bindErr == -1 || listenErr == -1)
+            exit(-1);
     }
 
     Connection *makeConnection()

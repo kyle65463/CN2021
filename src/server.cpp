@@ -3,9 +3,14 @@
 #include "connection/multiplexer.hpp"
 using namespace std;
 
-bool disconnected(Connection *conn)
+bool isDisconnected(Connection *conn) { return conn->getDisconnected(); }
+
+void removeDisconnectedConnections(vector<Connection *>& conns)
 {
-    return conn->getDisconnected();
+    for (int i = 0; i < conns.size(); i++)
+        if (conns[i]->getDisconnected())
+            cout << conns[i]->getFd() << " is disconnected" << endl;
+    conns.erase(remove_if(conns.begin(), conns.end(), isDisconnected), conns.end());
 }
 
 int main(int argc, char *argv[])
@@ -24,7 +29,7 @@ int main(int argc, char *argv[])
     cout << "server is listening on port " << port << endl;
     while (1)
     {
-        cout << "n_con=" << conns.size() << endl;
+        cout << "n_conn=" << conns.size() << endl;
         mux.waitForReady();
         if (mux.isServerReady())
         {
@@ -40,14 +45,10 @@ int main(int argc, char *argv[])
             {
                 conn->sendMessage("yo man");
                 cout << conn->getFd() << " " << conn->recvMessage() << endl;
-                if (conn->getDisconnected())
-                {
-                    cout << conn->getFd() << " is disconnected" << endl;
-                }
             }
         }
 
-        conns.erase(remove_if(conns.begin(), conns.end(), disconnected), conns.end());
+        removeDisconnectedConnections(conns);
     }
     cout << "sever ends" << endl;
 }
