@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include "connection/multiplexer.hpp"
+#include "commands/command_factory.hpp"
 using namespace std;
 
 bool isDisconnected(Connection *conn) { return conn->getIsDisconnected(); }
@@ -33,6 +34,7 @@ int main(int argc, char *argv[])
     vector<Connection *> conns;
     Multiplexer mux = Multiplexer(server, conns);
 
+    // Start the server
     server.startListening();
     cout << "server is listening on port " << port << endl;
     while (1)
@@ -53,15 +55,25 @@ int main(int argc, char *argv[])
             {
                 if (!conn->getIsLoggedIn())
                 {
+                    // Get client's username for login
                     string username = conn->recvMessage();
                     if (isUsernameDuplicated(username, conns))
                         conn->sendMessage("username is in used, please try another:\n");
                     else
+                    {
                         conn->login(username);
+                        conn->sendMessage("connect successfully\n");
+                    }
                 }
                 else
                 {
-                    conn->recvMessage();
+                    // Get client's commands
+                    string input = conn->recvMessage();
+                    Command *cmd = CommandFactory::parse(input);
+                    if (cmd == NULL)
+                        conn->sendMessage("Command not found\n");
+                    else
+                        conn->sendMessage("ok\n");
                 }
             }
         }

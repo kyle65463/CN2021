@@ -21,8 +21,8 @@ int main(int argc, char *argv[])
 
     while(1) {
         cout << conn->recvMessage();
-        string msg;
-        cin >> msg;
-        conn->sendMessage(msg);
+        string input;
+        getline(cin, input);
+        conn->sendMessage(input);
     }
 }
