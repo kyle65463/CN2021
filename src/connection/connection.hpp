@@ -32,14 +32,14 @@ public:
         return string(buf);
     }
 
-    void sendFile(const string &filename)
+    bool sendFile(const string &filename)
     {
         // Open the file and
         FILE *fp = fopen(filename.c_str(), "rb");
         if (!fp)
         {
             sendMessage("-1", HEADER_SIZE); // Indicates no sending file
-            return;
+            return true;
         }
 
         // Read length and send the file's length as header
@@ -59,6 +59,7 @@ public:
                 break;
         }
         fclose(fp);
+        return false;
     }
 
     bool recvFile(const string &outname)
@@ -74,7 +75,7 @@ public:
         int bytesRead;
         while (length > 0)
         {
-            bytesRead = recv(fd, buffer, sizeof(buffer), 0);
+            bytesRead = recv(fd, buffer, min(length, int(sizeof(buffer))), 0);
             length -= bytesRead;
             fwrite(&buffer, 1, bytesRead, fp);
         }

@@ -22,7 +22,8 @@ public:
 
     void execute(Connection *conn)
     {
-        bool err = conn->recvFile(serverBasepath + "/" + filename);
+        string fullFilename = serverBasepath + "/" + filename;
+        bool err = conn->recvFile(fullFilename);
         if (!err)
             conn->sendMessage("put " + filename + " successfully\n");
         else
