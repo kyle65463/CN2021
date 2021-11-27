@@ -36,6 +36,11 @@ int main(int argc, char *argv[])
 
     // Start the server
     server.startListening();
+    if (server.getHasError())
+    {
+        cout << "bind error" << endl;
+        return 0;
+    }
     cout << "server is listening on port " << port << endl;
     while (1)
     {

@@ -7,7 +7,7 @@ using namespace std;
 class Connection
 {
 public:
-    Connection(int fd, bool hasError = false) : fd(fd), hasError(hasError) {}
+    Connection(int fd) : fd(fd) {}
 
     void sendMessage(const string &msg, int size = -1)
     {
@@ -87,14 +87,12 @@ public:
 
     // Getters
     int getFd() { return fd; }
-    bool getHasError() { return hasError; }
     bool getIsDisconnected() { return isDisconnected; }
     bool getIsLoggedIn() { return isLoggedIn; }
     const string &getUsername() { return username; }
 
 private:
     int fd;
-    bool hasError;
     bool isDisconnected;
     bool isLoggedIn;
     string username;

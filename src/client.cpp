@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     int port = stoi(ipport.substr(ipport.find(':') + 1));
     ClientSocket client = ClientSocket(port, ip);
     Connection *conn = client.makeConnection();
-    if (conn->getHasError())
+    if (client.getHasError())
     {
         cout << "connection error" << endl;
         return 0;

@@ -22,8 +22,10 @@ public:
 
     // Getters
     int getFd() { return socketfd; }
+    bool getHasError() { return hasError; }
 
 protected:
     struct sockaddr_in info;
     int socketfd;
+    bool hasError;
 };
