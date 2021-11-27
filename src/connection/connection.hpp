@@ -18,7 +18,7 @@ public:
         int ret = recv(fd, buf, sizeof(buf), 0);
         if (ret <= 0)
         {
-            disconnected = true;
+            isDisconnected = true;
             closeConnection();
         }
         return string(buf);
@@ -52,6 +52,12 @@ public:
         fclose(filefd);
     }
 
+    void login(const string &username)
+    {
+        this->username = username;
+        isLoggedIn = true;
+    }
+
     void closeConnection()
     {
         close(fd);
@@ -60,10 +66,14 @@ public:
     // Getters
     int getFd() { return fd; }
     bool getHasError() { return hasError; }
-    bool getDisconnected() { return disconnected; }
+    bool getIsDisconnected() { return isDisconnected; }
+    bool getIsLoggedIn() { return isLoggedIn; }
+    const string &getUsername() { return username; }
 
 private:
     int fd;
     bool hasError;
-    bool disconnected;
+    bool isDisconnected;
+    bool isLoggedIn;
+    string username;
 };

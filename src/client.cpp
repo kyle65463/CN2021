@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     }
 
     while(1) {
-        cout << conn->recvMessage() << endl;
+        cout << conn->recvMessage();
         string msg;
         cin >> msg;
         conn->sendMessage(msg);

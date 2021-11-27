@@ -3,14 +3,22 @@
 #include "connection/multiplexer.hpp"
 using namespace std;
 
-bool isDisconnected(Connection *conn) { return conn->getDisconnected(); }
+bool isDisconnected(Connection *conn) { return conn->getIsDisconnected(); }
 
-void removeDisconnectedConnections(vector<Connection *>& conns)
+void removeDisconnectedConnections(vector<Connection *> &conns)
 {
     for (int i = 0; i < conns.size(); i++)
-        if (conns[i]->getDisconnected())
+        if (conns[i]->getIsDisconnected())
             cout << conns[i]->getFd() << " is disconnected" << endl;
     conns.erase(remove_if(conns.begin(), conns.end(), isDisconnected), conns.end());
+}
+
+bool isUsernameDuplicated(const string &username, vector<Connection *> &conns)
+{
+    for (int i = 0; i < conns.size(); i++)
+        if (conns[i]->getIsLoggedIn() && conns[i]->getUsername() == username)
+            return true;
+    return false;
 }
 
 int main(int argc, char *argv[])
@@ -35,7 +43,7 @@ int main(int argc, char *argv[])
         {
             Connection *conn = server.makeConnection();
             conns.push_back(conn);
-            conn->sendMessage("Hi, how are you");
+            conn->sendMessage("input your username:\n");
         }
 
         for (int i = 0; i < conns.size(); i++)
@@ -43,8 +51,18 @@ int main(int argc, char *argv[])
             Connection *conn = conns[i];
             if (mux.isConnectionReady(conn))
             {
-                conn->sendMessage("yo man");
-                cout << conn->getFd() << " " << conn->recvMessage() << endl;
+                if (!conn->getIsLoggedIn())
+                {
+                    string username = conn->recvMessage();
+                    if (isUsernameDuplicated(username, conns))
+                        conn->sendMessage("username is in used, please try another:\n");
+                    else
+                        conn->login(username);
+                }
+                else
+                {
+                    conn->recvMessage();
+                }
             }
         }
 
