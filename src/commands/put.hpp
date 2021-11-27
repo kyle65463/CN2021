@@ -22,7 +22,6 @@ public:
     void execute(Connection *conn)
     {
         conn->recvFile(serverBasepath + "/" + filename);
-        conn->sendMessage("ok\n");
     }
 
 private:

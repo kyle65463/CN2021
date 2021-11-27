@@ -21,12 +21,24 @@ int main(int argc, char *argv[])
         return 0;
     }
 
+    // Try logging in
     while (1)
     {
-        cout << conn->recvMessage();
+        string serverOutput = conn->recvMessage();
+        cout << serverOutput;
+        if (serverOutput == "connect successfully\n")
+            break;
+        string username;
+        getline(cin, username);
+        conn->sendMessage(username);
+    }
+
+    // Send commands
+    while (1)
+    {
         string input;
         getline(cin, input);
-        conn->sendMessage(input); // Send input first
+        conn->sendMessage(input); // Send input to server first
         Command *cmd = CommandFactory::parse(input);
         if (cmd != NULL)
             cmd->execute(conn);

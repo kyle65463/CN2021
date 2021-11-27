@@ -10,6 +10,7 @@ class ClientList : public Command
 public:
     void execute(Connection *conn)
     {
+        cout << conn->recvMessage();
     }
 };
 
