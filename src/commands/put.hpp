@@ -1,9 +1,22 @@
 #include "command.hpp"
 
-class Put : public Command
+class ClientPut : public Command
 {
 public:
-    Put(const string &filename) : filename(filename) {}
+    ClientPut(const string &filename) : filename(filename) {}
+
+    void execute(Connection *conn)
+    {
+    }
+
+private:
+    string filename;
+};
+
+class ServerPut : public Command
+{
+public:
+    ServerPut(const string &filename) : filename(filename) {}
 
     void execute(Connection *conn)
     {

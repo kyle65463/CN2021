@@ -5,7 +5,15 @@
 #include "command.hpp"
 namespace fs = std::__fs::filesystem;
 
-class List : public Command
+class ClientList : public Command
+{
+public:
+    void execute(Connection *conn)
+    {
+    }
+};
+
+class ServerList : public Command
 {
 public:
     void execute(Connection *conn)

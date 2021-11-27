@@ -1,1 +1,4 @@
 out/
+.vscode/
+server_dir/
+client_dir/

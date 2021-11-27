@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
                 {
                     // Get client's commands
                     string input = conn->recvMessage();
-                    Command *cmd = CommandFactory::parse(input);
+                    Command *cmd = CommandFactory::parse(input, true);
                     if (cmd == NULL)
                         conn->sendMessage("Command not found\n");
                     else

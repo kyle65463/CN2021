@@ -10,6 +10,6 @@ public:
     virtual void execute(Connection *conn) = 0;
 
 protected:
-    string basepath = "src";
+    string basepath = "server_dir";
 };
 #endif

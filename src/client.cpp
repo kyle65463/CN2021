@@ -1,5 +1,6 @@
 #include <iostream>
 #include "connection/client_socket.hpp"
+#include "commands/command_factory.hpp"
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -14,15 +15,20 @@ int main(int argc, char *argv[])
     int port = stoi(ipport.substr(ipport.find(':') + 1));
     ClientSocket client = ClientSocket(port, ip);
     Connection *conn = client.makeConnection();
-    if(conn->getHasError()) {
+    if (conn->getHasError())
+    {
         cout << "Connection error" << endl;
         return 0;
     }
 
-    while(1) {
+    while (1)
+    {
         cout << conn->recvMessage();
         string input;
         getline(cin, input);
-        conn->sendMessage(input);
+        conn->sendMessage(input); // Send input first
+        Command *cmd = CommandFactory::parse(input);
+        if (cmd != NULL)
+            cmd->execute(conn);
     }
 }

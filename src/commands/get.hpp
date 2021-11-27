@@ -1,9 +1,22 @@
 #include "command.hpp"
 
-class Get : public Command
+class ClientGet : public Command
 {
 public:
-    Get(const string &filename) : filename(filename) {}
+    ClientGet(const string &filename) : filename(filename) {}
+
+    void execute(Connection *conn)
+    {
+    }
+
+private:
+    string filename;
+};
+
+class ServerGet : public Command
+{
+public:
+    ServerGet(const string &filename) : filename(filename) {}
 
     void execute(Connection *conn)
     {

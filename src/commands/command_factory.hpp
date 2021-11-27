@@ -13,11 +13,7 @@ using namespace std;
 class CommandFactory
 {
 public:
-    void initialize()
-    {
-    }
-
-    static Command *parse(const string &input)
+    static Command *parse(const string &input, bool serverSide = false)
     {
         // Tokenize the input
         vector<string> tokens;
@@ -30,14 +26,29 @@ public:
         if (tokens.size() == 1)
         {
             if (tokens[0] == "ls")
-                cmd = new List();
+            {
+                if (serverSide)
+                    cmd = new ServerList();
+                else
+                    cmd = new ClientList();
+            }
         }
         if (tokens.size() == 2)
         {
             if (tokens[0] == "get")
-                cmd = new Get(tokens[1]);
+            {
+                if (serverSide)
+                    cmd = new ServerGet(tokens[1]);
+                else
+                    cmd = new ClientGet(tokens[1]);
+            }
             if (tokens[0] == "put")
-                cmd = new Put(tokens[1]);
+            {
+                if (serverSide)
+                    cmd = new ServerPut(tokens[1]);
+                else
+                    cmd = new ClientPut(tokens[1]);
+            }
         }
         return cmd;
     };
