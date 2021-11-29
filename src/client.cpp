@@ -13,8 +13,8 @@ int main(int argc, char *argv[])
     }
     string clientBasepath = "client_dir";
     if (!fs::is_directory(clientBasepath) || !fs::exists(clientBasepath))
-        fs::create_directory(clientBasepath); // create server_dir folder
-    
+        fs::create_directory(clientBasepath); // create client_dir folder
+
     string ipport = argv[1];
     string ip = ipport.substr(0, ipport.find(':'));
     int port = stoi(ipport.substr(ipport.find(':') + 1));
@@ -26,14 +26,24 @@ int main(int argc, char *argv[])
         return 0;
     }
 
+    bool isLoggedIn = false;
     while (1)
     {
-        cout << conn->recvMessage();
+        string output = conn->recvMessage();
+        cout << output;
+        if (output == "connect successfully\n")
+            isLoggedIn = true;
+
         string input;
         getline(cin, input);
         conn->sendMessage(input); // Send input to server first
-        Command *cmd = CommandFactory::parse(input);
-        if (cmd != NULL)
-            cmd->execute(conn);
+
+        // Execute the command
+        if (isLoggedIn)
+        {
+            Command *cmd = CommandFactory::parse(input);
+            if (cmd != NULL)
+                cmd->execute(conn);
+        }
     }
 }

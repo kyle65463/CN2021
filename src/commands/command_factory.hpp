@@ -22,34 +22,58 @@ public:
              istream_iterator<string>(),
              back_inserter(tokens));
 
-        Command *cmd = NULL;
-        if (tokens.size() == 1)
+        bool formatError = false;
+        if (tokens.size() > 0)
         {
             if (tokens[0] == "ls")
             {
-                if (serverSide)
-                    cmd = new ServerList();
+                if (tokens.size() == 1)
+                {
+                    if (serverSide)
+                        return new ServerList();
+                    else
+                        return new ClientList();
+                }
                 else
-                    cmd = new ClientList();
+                    formatError = true;
             }
-        }
-        if (tokens.size() == 2)
-        {
             if (tokens[0] == "get")
             {
-                if (serverSide)
-                    cmd = new ServerGet(tokens[1]);
+                if (tokens.size() == 2)
+                {
+
+                    if (serverSide)
+                        return new ServerGet(tokens[1]);
+                    else
+                        return new ClientGet(tokens[1]);
+                }
                 else
-                    cmd = new ClientGet(tokens[1]);
+                    formatError = true;
             }
             if (tokens[0] == "put")
             {
-                if (serverSide)
-                    cmd = new ServerPut(tokens[1]);
+                if (tokens.size() == 2)
+                {
+                    if (serverSide)
+                        return new ServerPut(tokens[1]);
+                    else
+                        return new ClientPut(tokens[1]);
+                }
                 else
-                    cmd = new ClientPut(tokens[1]);
+                    formatError = true;
             }
         }
-        return cmd;
+        if (formatError)
+        {
+            if (serverSide)
+
+                return new ServerCommandFormatError();
+            else
+                return new ClientCommandFormatError();
+        }
+        if (serverSide)
+            return new ServerCommandNotFound();
+        else
+            return new ClientCommandNotFound();
     };
 };

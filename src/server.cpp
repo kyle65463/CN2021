@@ -47,10 +47,9 @@ int main(int argc, char *argv[])
         cout << "bind error" << endl;
         return 0;
     }
-    cout << "server is listening on port " << port << endl;
+
     while (1)
     {
-        cout << "n_conn=" << conns.size() << endl;
         mux.waitForReady();
         if (mux.isServerReady())
         {
@@ -81,9 +80,7 @@ int main(int argc, char *argv[])
                     // Get client's commands
                     string input = conn->recvMessage();
                     Command *cmd = CommandFactory::parse(input, true);
-                    if (cmd == NULL)
-                        conn->sendMessage("Command not found\n");
-                    else
+                    if (cmd != NULL)
                         cmd->execute(conn);
                 }
             }
@@ -91,9 +88,4 @@ int main(int argc, char *argv[])
 
         removeDisconnectedConnections(conns);
     }
-    cout << "sever ends" << endl;
 }
-
-// TODO: 
-// create directory automatically
-// separate command not found and command format error
