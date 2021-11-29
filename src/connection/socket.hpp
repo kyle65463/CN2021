@@ -4,6 +4,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <string.h>
 #include "connection.hpp"
 using namespace std;
 
@@ -16,6 +17,7 @@ public:
         info.sin_family = PF_INET;
         info.sin_addr.s_addr = s_addr;
         info.sin_port = htons(port);
+        hasError = false;
     }
 
     virtual Connection *makeConnection() = 0;

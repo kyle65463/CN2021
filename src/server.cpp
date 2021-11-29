@@ -3,15 +3,15 @@
 #include "connection/multiplexer.hpp"
 #include "commands/command_factory.hpp"
 using namespace std;
-namespace fs = std::__fs::filesystem;
+namespace fs = std::filesystem;
 
 bool isDisconnected(Connection *conn) { return conn->getIsDisconnected(); }
 
 void removeDisconnectedConnections(vector<Connection *> &conns)
 {
-    for (int i = 0; i < conns.size(); i++)
-        if (conns[i]->getIsDisconnected())
-            cout << conns[i]->getFd() << " is disconnected" << endl;
+    // for (int i = 0; i < conns.size(); i++)
+    //     if (conns[i]->getIsDisconnected())
+    //         cout << conns[i]->getFd() << " is disconnected" << endl;
     conns.erase(remove_if(conns.begin(), conns.end(), isDisconnected), conns.end());
 }
 

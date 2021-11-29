@@ -3,7 +3,7 @@
 #include <sstream>
 #include <filesystem>
 #include "command.hpp"
-namespace fs = std::__fs::filesystem;
+namespace fs = std::filesystem;
 
 class ClientList : public Command
 {

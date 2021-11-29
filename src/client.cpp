@@ -2,13 +2,13 @@
 #include "connection/client_socket.hpp"
 #include "commands/command_factory.hpp"
 using namespace std;
-namespace fs = std::__fs::filesystem;
+namespace fs = std::filesystem;
 
 int main(int argc, char *argv[])
 {
     if (argc != 2)
     {
-        cout << "usage: ./server <ip:port>" << endl;
+        cout << "usage: ./client <ip:port>" << endl;
         return 0;
     }
     string clientBasepath = "client_dir";

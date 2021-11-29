@@ -102,7 +102,7 @@ public:
 
 private:
     int fd;
-    bool isDisconnected;
-    bool isLoggedIn;
-    string username;
+    bool isDisconnected = false;
+    bool isLoggedIn = false;
+    string username = "";
 };
