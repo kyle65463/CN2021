@@ -3,6 +3,7 @@
 #include "connection/multiplexer.hpp"
 #include "commands/command_factory.hpp"
 using namespace std;
+namespace fs = std::__fs::filesystem;
 
 bool isDisconnected(Connection *conn) { return conn->getIsDisconnected(); }
 
@@ -29,6 +30,11 @@ int main(int argc, char *argv[])
         cout << "usage: ./server <port>" << endl;
         return 0;
     }
+
+    string serverBasepath = "server_dir";
+    if (!fs::is_directory(serverBasepath) || !fs::exists(serverBasepath))
+        fs::create_directory(serverBasepath); // create server_dir folder
+
     int port = stoi(argv[1]);
     ServerSocket server = ServerSocket(port);
     vector<Connection *> conns;
@@ -87,3 +93,7 @@ int main(int argc, char *argv[])
     }
     cout << "sever ends" << endl;
 }
+
+// TODO: 
+// create directory automatically
+// separate command not found and command format error
